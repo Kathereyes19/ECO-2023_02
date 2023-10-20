@@ -2,21 +2,26 @@ let car;
 let carImage; // Variable para la imagen del carro
 let obstacles = [];
 let score = 0;
-let roadWidth = 100;
+let roadWidth = 200; // Ancho de la carretera, dividido por 4 carriles
 let gameStarted = false;
 let speed = 3;
 let obstaclesDodged = 0;
 let countdown = 3; // Inicializa la cuenta regresiva en 3 segundos
 let countdownInterval;
+let gameEnded = false; // Nuevo flag para controlar si el juego ha terminado
 
 // Define la clase Obstacle antes de la función setup
 class Obstacle {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
+  constructor(lane) {
+    this.lane = lane; // Carril en el que aparece el obstáculo
     this.width = random(30, 60); // Ancho aleatorio para el obstáculo
     this.height = random(30, 60); // Alto aleatorio para el obstáculo
-    console.log('Obstacle created at', this.x, this.y);
+    this.x = this.lane * (roadWidth / 4) + roadWidth / 8; // Calcula la posición x del obstáculo en el carril
+    this.y = 0; // Comienza en la parte superior de la pantalla
+  }
+
+  move() {
+    this.y += speed; // Hace que el obstáculo se mueva hacia abajo
   }
 }
 
@@ -26,6 +31,7 @@ function getCar() {
 
 function preload() {
   carImage = loadImage('./img/carro.png'); // Reemplaza 'car.png' con el nombre de tu imagen de carro
+  obstacleImage = loadImage('./img/logo.png');
 }
 
 function setup() {
@@ -45,11 +51,14 @@ function draw() {
   // Dibuja la pista
   drawRoad();
 
-  // Genera obstáculos aleatorios
-  if (frameCount % 60 === 0) {
-    // Generar un obstáculo cada segundo
-    let obstacle = new Obstacle(width / 2, 0); // Crea obstáculos en la parte superior de la pantalla
-    obstacles.push(obstacle);
+  if (!gameEnded) {
+    // Genera obstáculos aleatorios
+    if (frameCount % 60 === 0) {
+      // Generar un obstáculo cada segundo
+      let lane = Math.floor(random(0, 4)); // Elije un carril aleatorio (0, 1, 2 o 3)
+      let obstacle = new Obstacle(lane); // Crea obstáculos en la parte superior de la pantalla
+      obstacles.push(obstacle);
+    }
   }
 
   if (car) {
@@ -60,10 +69,10 @@ function draw() {
     for (let i = obstacles.length - 1; i >= 0; i--) {
       drawObstacle(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
 
-      if (car.hits(obstacles[i])) {
+      if (!gameEnded && car.hits(obstacles[i])) {
         // Implementa la lógica de colisión
+        gameEnded = true;
         gameOver();
-        obstacles.splice(i, 1);
       }
     }
 
@@ -73,18 +82,28 @@ function draw() {
     text('Puntuación: ' + score, 20, 50);
 
     // Incrementa la puntuación con el tiempo
-    score++;
+    if (!gameEnded) {
+      score++;
+    }
+  }
+  
+  if (!gameEnded) {
+    // Mueve y dibuja los obstáculos
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+      obstacles[i].move();
+      drawObstacle(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
+
+      if (obstacles[i].y > height) {
+        obstacles.splice(i, 1);
+      }
+    }
   }
 
   // Función para dibujar la pista
   function drawRoad() {
-    fill(100);
-    rect(width / 2 - roadWidth / 2, 0, roadWidth, height); // Pista central
-
-    // Líneas divisorias en la pista
-    for (let i = 0; i < height; i += 40) {
-      fill(255);
-      rect(width / 2 - 5, i, 10, 30);
+    for (let i = 0; i < 4; i++) {
+      fill(100);
+      rect(i * roadWidth, 0, roadWidth, height); // Dibuja cuatro carriles
     }
   }
 }
@@ -106,18 +125,20 @@ function startCountdown() {
 
 class Car {
   constructor() {
-    // Propiedades del carro
-    this.lane = 1; // Carril actual (inicia en el carril central)
-    this.laneWidth = roadWidth / 3; // Ancho del carril
+    this.lane = 2; // Carril actual (inicia en el carril central)
+    this.laneWidth = roadWidth / 4; // Ancho del carril
+
+    // Calcula la posición x basada en el carril
+    this.x = this.lane * this.laneWidth + this.laneWidth / 2; // Posiciona el carro en el carril central
     this.y = height - 100; // Altura en la que se encuentra el carro
-    this.width = 40; // Ancho del carro
-    this.height = 60; // Alto del carro
-    console.log('Car created at', this.lane, this.y);
+    this.width = 60; // Ancho del carro (un poco más grande)
+    this.height = 90; // Alto del carro (un poco más grande)
+    console.log('Car created at', this.lane, this.x, this.y);
   }
 
   moveToLane(lane) {
-    // Cambia el carril del carro (0 para izquierda, 1 para centro, 2 para derecha)
-    this.lane = constrain(lane, 0, 2);
+    // Cambia el carril del carro (0 para izquierda, 1 para centro, 2 para derecha, 3 para el cuarto carril)
+    this.lane = constrain(lane, 0, 3);
   }
 
   move() {
@@ -126,7 +147,7 @@ class Car {
       this.moveToLane(this.lane - 1); // Mueve el carro a la izquierda
     }
 
-    if (keyIsDown(RIGHT_ARROW) && this.lane < 2) {
+    if (keyIsDown(RIGHT_ARROW) && this.lane < 3) {
       this.moveToLane(this.lane + 1); // Mueve el carro a la derecha
     }
   }
@@ -137,12 +158,12 @@ class Car {
     const carRight = this.x + this.width / 2;
     const carTop = this.y - this.height / 2;
     const carBottom = this.y + this.height / 2;
-
+  
     const obstacleLeft = obstacle.x - obstacle.width / 2;
     const obstacleRight = obstacle.x + obstacle.width / 2;
     const obstacleTop = obstacle.y - obstacle.height / 2;
     const obstacleBottom = obstacle.y + obstacle.height / 2;
-
+  
     // Verifica si el carro se superpone con el obstáculo
     if (
       carLeft < obstacleRight &&
@@ -150,10 +171,12 @@ class Car {
       carTop < obstacleBottom &&
       carBottom > obstacleTop
     ) {
-      return true; // Colisión detectada
-    } else {
-      return false; // No hay colisión
+      // Colisión detectada, pero si el obstáculo está en la parte inferior del canvas, no termina el juego
+      if (obstacle.y < height) {
+        return true; // Colisión válida
+      }
     }
+    return false; // No hay colisión
   }
 }
 
@@ -165,8 +188,8 @@ function drawCar(x, y, lane, laneWidth, carWidth, carHeight) {
 }
 
 function drawObstacle(x, y, width, height) {
-  fill(0, 0, 255); // Color del obstáculo (azul en este ejemplo)
-  rect(x - width / 2, y - height / 2, width, height);
+  // En lugar de dibujar un rectángulo azul, muestra la imagen del obstáculo
+  image(obstacleImage, x - width / 2, y - height / 2, width, height);
 }
 
 // Función para manejar el final del juego

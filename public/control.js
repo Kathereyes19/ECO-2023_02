@@ -1,69 +1,95 @@
-let currentLane = 1;  // Carril actual del carro (inicia en el carril central)
-let gameStarted = false; // Variable para rastrear si el juego ha comenzado
+let currentLane = 1; // Carril actual del carro (inicia en el carril central)
+let gameStarted = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  // Configura el tamaño del botón para iniciar el juego
   let buttonWidth = width / 3;
   let buttonHeight = 60;
-  let buttonX = (width - buttonWidth) / 2;
   let buttonY = height - buttonHeight - 20;
-  
-  // Dibuja el botón para iniciar el juego
+
+  // Botón para mover el carro a la izquierda
+  createButton(width / 6, buttonY, buttonWidth, buttonHeight, 'Izquierda', moveCarLeft);
+
+  // Botón para iniciar el juego
+  createButton(width / 2, buttonY, buttonWidth, buttonHeight, 'Iniciar Juego', startGame);
+
+  // Botón para mover el carro a la derecha
+  createButton((5 * width) / 6, buttonY, buttonWidth, buttonHeight, 'Derecha', moveCarRight);
+}
+
+function createButton(x, y, w, h, label, action) {
   rectMode(CENTER);
-  fill(0, 255, 0); // Color verde
-  rect(buttonX, buttonY, buttonWidth, buttonHeight, 10); // Botón redondeado
-  fill(0); // Texto negro
+  fill(0, 255, 0);
+  rect(x, y, w, h, 10);
+  fill(0);
   textSize(24);
   textAlign(CENTER, CENTER);
-  text('Iniciar Juego', width / 2, buttonY);
+  text(label, x, y);
+  return {
+    x: x - w / 2,
+    y: y - h / 2,
+    width: w,
+    height: h,
+    action: action,
+  };
 }
 
 function touchStarted() {
   if (gameStarted) {
-    // Si el juego ya ha comenzado, maneja los controles del carro
-    if (mouseX < width / 3) {
-      moveCarLeft();
-    } else if (mouseX > (2 * width) / 3) {
-      moveCarRight();
-    }
+    // Verificar si se tocó alguno de los botones de movimiento
+    checkButtonPress();
   } else {
-    // Si el juego no ha comenzado, verifica si se presionó el botón de inicio
-    let buttonWidth = width / 3;
-    let buttonHeight = 60;
-    let buttonX = (width - buttonWidth) / 2;
-    let buttonY = height - buttonHeight - 20;
-    
-    if (mouseX > buttonX - buttonWidth / 2 && mouseX < buttonX + buttonWidth / 2 &&
-        mouseY > buttonY - buttonHeight / 2 && mouseY < buttonY + buttonHeight / 2) {
-      startGame(); // Inicia el juego si se presiona el botón
-    }
+    // Verificar si se tocó el botón de inicio del juego
+    checkStartButtonPress();
   }
-  return false;  // Evita el comportamiento predeterminado del navegador al tocar la pantalla
+  return false;
+}
+
+function checkButtonPress() {
+  const leftButton = createButton(width / 6, height - 80, width / 3, 60, 'Izquierda', moveCarLeft);
+  const rightButton = createButton((5 * width) / 6, height - 80, width / 3, 60, 'Derecha', moveCarRight);
+
+  if (mouseX >= leftButton.x && mouseX <= leftButton.x + leftButton.width &&
+      mouseY >= leftButton.y && mouseY <= leftButton.y + leftButton.height) {
+    leftButton.action();
+  } else if (mouseX >= rightButton.x && mouseX <= rightButton.x + rightButton.width &&
+             mouseY >= rightButton.y && mouseY <= rightButton.y + rightButton.height) {
+    rightButton.action();
+  }
+}
+
+function checkStartButtonPress() {
+  const buttonWidth = width / 3;
+  const buttonHeight = 60;
+  const buttonX = (width - buttonWidth) / 2;
+  const buttonY = height - buttonHeight - 20;
+
+  if (mouseX >= buttonX && mouseX <= buttonX + buttonWidth &&
+      mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
+    startGame();
+  }
 }
 
 function moveCarLeft() {
   if (currentLane > 0) {
     currentLane--;
-    getCar().moveToLane(currentLane);  // Usa getCar() para obtener una referencia al carro
+    getCar().moveToLane(currentLane);
   }
 }
 
 function moveCarRight() {
   if (currentLane < 2) {
     currentLane++;
-    getCar().moveToLane(currentLane);  // Usa getCar() para obtener una referencia al carro
+    getCar().moveToLane(currentLane);
   }
 }
 
 function startGame() {
-  gameStarted = true; // Establece el estado del juego como "iniciado"
+  gameStarted = true;
   const gameContainer = document.getElementById('game-container');
-  gameContainer.style.display = 'block'; // Muestra el contenedor del juego
+  gameContainer.style.display = 'block';
+}
 
-
-// Función para obtener una referencia al carro (debes implementarla en sketch.js)
 function getCar() {
   return car;
-}
 }

@@ -7,7 +7,7 @@ body {
     padding: 0;
 }
 
-/* Estilos para el encabezado (título) */
+/* Estilos para el encabezado */
 h1 {
     text-align: center;
     color: #FF0000; /* Texto rojo */
@@ -39,18 +39,10 @@ button:hover {
     background-color: #FF3333; /* Fondo rojo ligeramente más claro */
 }
 
-/* Estilos para los carros */
-.car {
-    width: 40px; /* Ancho del carro */
-    height: 60px; /* Alto del carro */
-    background-color: #FF0000; /* Color de fondo rojo para los carros */
-    position: absolute; /* Posición absoluta para colocar los carros en el lienzo */
-}
-
 /* Agrega estilos para otros elementos, como obstáculos si es necesario */
 .obstacle {
-    width: 30px; /* Ancho del obstáculo */
-    height: 30px; /* Alto del obstáculo */
-    background-color: #0000FF; /* Color de fondo azul para los obstáculos */
-    position: absolute; /* Posición absoluta para colocar los obstáculos en el lienzo */
+    width: 30px; 
+    height: 30px; 
+    background-color: #0000FF; 
+    position: absolute;
 }
