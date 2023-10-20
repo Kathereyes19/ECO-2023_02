@@ -1,0 +1,56 @@
+/* Estilos para el cuerpo de la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Fondo negro */
+    color: #FF0000; /* Texto rojo */
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para el encabezado (título) */
+h1 {
+    text-align: center;
+    color: #FF0000; /* Texto rojo */
+    padding: 20px 0;
+}
+
+/* Estilos para el contenedor del juego */
+#game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000a3; /* Fondo negro */
+    border: 2px solid #FF0000; /* Borde rojo */
+    margin: 20px;
+}
+
+/* Estilos para los botones de control */
+button {
+    font-size: 16px;
+    background-color: #FF0000; /* Fondo rojo */
+    color: #000; /* Texto negro */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilos para los botones de control cuando se pasa el cursor sobre ellos */
+button:hover {
+    background-color: #FF3333; /* Fondo rojo ligeramente más claro */
+}
+
+/* Estilos para los carros */
+.car {
+    width: 40px; /* Ancho del carro */
+    height: 60px; /* Alto del carro */
+    background-color: #FF0000; /* Color de fondo rojo para los carros */
+    position: absolute; /* Posición absoluta para colocar los carros en el lienzo */
+}
+
+/* Agrega estilos para otros elementos, como obstáculos si es necesario */
+.obstacle {
+    width: 30px; /* Ancho del obstáculo */
+    height: 30px; /* Alto del obstáculo */
+    background-color: #0000FF; /* Color de fondo azul para los obstáculos */
+    position: absolute; /* Posición absoluta para colocar los obstáculos en el lienzo */
+}
