@@ -1,4 +1,5 @@
 const socket = io.connect('http://localhost:5500');
+
 let car;
 let carImage;
 let obstacles = [];
@@ -8,12 +9,13 @@ let speed = 3;
 let countdown = 3;
 let gameStarted = false;
 let gameEnded = false;
+let FondoImage;
 const obstacleImages = [];
 
 // Carga de imágenes de obstáculos
 function preload() {
   carImage = loadImage('./img/carro.png');
-  FondoImage = loadImage('./img/fondo.png');
+  FondoImage = loadImage('./img/fondo2.png');
   obstacleImages.push(loadImage('./img/obstaculo1.png'));
   obstacleImages.push(loadImage('./img/obstaculo2.png'));
   obstacleImages.push(loadImage('./img/obstaculo3.png'));

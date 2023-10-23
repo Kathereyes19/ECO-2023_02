@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const port = 5501; // Puerto en el que se ejecutará el servidor
+const port = 5500; // Puerto en el que se ejecutará el servidor
 let gameInProgress = false;
 let carPosition = 1; // Carril actual del carro (inicia en el carril central)
 
