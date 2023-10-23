@@ -1,0 +1,26 @@
+/* Estilo para el cuerpo del documento */
+body {
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Estilo para el lienzo del juego */
+/* canvas {
+  background-image: url('img/fondo.png');
+  background-size: 477px 658px;
+  background-repeat: no-repeat; 
+  background-position: center center; 
+  width: 477px; 
+  height: 658px; 
+}
+ */
+
+
+

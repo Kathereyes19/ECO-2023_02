@@ -1,0 +1,49 @@
+body {
+    background-image: url('img/fondo.png');
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-position: left; 
+    width: 390px; 
+    height: 844px; 
+    margin: 0; 
+    overflow: hidden; 
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    display: block;
+}
+
+h1 {
+    font-size: 30px;
+    text-transform: uppercase;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    background-color: rgba(255, 0, 0, 0.8); /* Rojo con transparencia al 80% */
+    color: white;
+    font-size: 20px;
+    border: none;
+    padding: 10px 30px; /* Mayor espacio entre los botones */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 10px; /* Espacio entre los botones */
+}
+
+button:hover {
+    background-color: rgba(116, 15, 15, 0.675); /* Rojo al 100% al pasar el ratón */
+}
+
