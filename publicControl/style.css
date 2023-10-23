@@ -1,49 +1,44 @@
 body {
-    background-image: url('img/fondo.png');
-    background-size: contain; 
-    background-repeat: no-repeat; 
-    background-position: left; 
-    width: 390px; 
-    height: 844px; 
-    margin: 0; 
-    overflow: hidden; 
     font-family: Arial, sans-serif;
-    background-color: #333;
-    color: white;
+    background-color: #f0f0f0;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 20px;
+    margin: 0;
+}
+
+h1 {
+    color: #333;
+}
+
+#canvas-container {
+    position: relative;
+    background: url('img/fondo.png') no-repeat center center fixed;
+    background-size: cover;
+    width: 390px;
+    height: 844px;
 }
 
 canvas {
     display: block;
-}
-
-h1 {
-    font-size: 30px;
-    text-transform: uppercase;
-}
-
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0 auto;
+    background: url('img/fondo.png') no-repeat center center fixed;
 }
 
 button {
-    background-color: rgba(255, 0, 0, 0.8); /* Rojo con transparencia al 80% */
-    color: white;
-    font-size: 20px;
-    border: none;
-    padding: 10px 30px; /* Mayor espacio entre los botones */
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin: 10px; /* Espacio entre los botones */
+  background-color: #a10000;
+  color: white;
+  border: none;
+  width: 90px;
+  height: 50px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 0 10px; /* Espacio entre los botones */
+  display: inline-block; /* Para que estén uno al lado del otro */
 }
 
 button:hover {
-    background-color: rgba(116, 15, 15, 0.675); /* Rojo al 100% al pasar el ratón */
+  background-color: #b83030;
 }
-

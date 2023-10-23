@@ -21,6 +21,7 @@ function preload() {
   obstacleImages.push(loadImage('./img/obstaculo3.png'));
   obstacleImages.push(loadImage('./img/obstaculo4.png'));
 }
+
 // Evento: El juego ha comenzado
 socket.on('gameStarted', () => {
   startGame();
@@ -39,10 +40,11 @@ function setup() {
   createCanvas(477, 658);
   car = new Car();
   startCountdown();
+  console.log('El juego está listo.');
 }
 
 function draw() {
-background(FondoImage); 
+  background(FondoImage);
   if (countdown > 0) {
     displayCountdown();
     return;
@@ -58,6 +60,7 @@ background(FondoImage);
         let lane = Math.floor(random(0, 4));
         let obstacle = new Obstacle(lane);
         obstacles.push(obstacle);
+        console.log('Nuevo obstáculo creado en el carril', lane);
       }
     }
 
@@ -68,6 +71,7 @@ background(FondoImage);
       if (!gameEnded && car.hits(obstacles[i])) {
         gameEnded = true;
         gameOver();
+        console.log('¡Colisión con un obstáculo!');
       }
     }
 
@@ -89,6 +93,7 @@ background(FondoImage);
 
       if (obstacles[i].y > height) {
         obstacles.splice(i, 1);
+        console.log('Obstáculo eliminado');
       }
     }
   }
@@ -108,7 +113,6 @@ function startCountdown() {
     }
   }, 1000);
 }
-
 function drawRoad(centerX) {
   fill(100); // Color de la carretera
   rect(0, height - roadWidth, width, roadWidth);
